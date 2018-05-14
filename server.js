@@ -45,14 +45,16 @@ router.post('/fulfill', (ctx) => {
   const result = ctx.request.body.queryResult;
   const service = result.action.split('.')[0];
   const action = result.action.split('.')[1];
+  if (!result.allRequiredParamsPresent) {
+    ctx.body = null;
+    return;
+  }
   return Services.Fulfillment[service][action](result).then((body) => {
     ctx.body = {
       fulfillmentText: body.join('\n')
     };
   }).catch((err) => {
-    ctx.body = {
-      fulfillmentText: err.message
-    };
+    ctx.body = err;
   })
 });
 router.get('/', (ctx) => {
