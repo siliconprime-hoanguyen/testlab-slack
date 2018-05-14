@@ -13,11 +13,12 @@ module.exports = {
     };
     return new Promise((resolve, reject) => {
       request(newOptions, (err, res, body) => {
+        console.log(body);
         if (err || res.statusCode >= 400) {
           return reject({ message: 'error getting project list'});
         }
-        const projects = body.data.map(d => `${d.id} - ${d.name}`);
-        return resolve(projects);
+        const tasks = body.data.map(d => `${d.id} - ${d.name}`);
+        return resolve(tasks);
       })
     });
   }

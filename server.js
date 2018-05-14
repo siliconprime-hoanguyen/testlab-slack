@@ -41,7 +41,6 @@ app.use(async (ctx, next) => {
 });
 
 router.post('/fulfill', (ctx) => {
-  console.log(JSON.stringify(ctx.request.body));
   const result = ctx.request.body.queryResult;
   const service = result.action.split('.')[0];
   const action = result.action.split('.')[1];
@@ -49,7 +48,7 @@ router.post('/fulfill', (ctx) => {
     ctx.body = null;
     return;
   }
-  return Services.Fulfillment[service][action](result).then((body) => {
+  return Services.Fulfillment[service][action](result.parameters).then((body) => {
     ctx.body = {
       fulfillmentText: body.join('\n')
     };
